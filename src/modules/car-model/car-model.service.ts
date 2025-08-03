@@ -1,22 +1,46 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/sequelize';
+import { carModel } from './carModel.entity';
+import { CreateModelDto } from './create_model.dto';
+import { UpdateModelDto } from './update_model.dto';
 
 @Injectable()
 export class CarModelService {
-     create (model: object) {
-        return {
-            message: 'Criado com sucesso',
-            data: model,
-        };
-    }
-        getCar () {
-            return {
-                message: 'Encontrado com sucesso',
-                data: [{nome: "Fiat Mobi",preco: 73990, ano: 2024}, 
-                       {nome: "Onix", preco: 120000, ano: 2024},
-                       {nome: "Fiat FastBack", preco: 120150, ano: 2020},
-                       {nome: "Montana", preco: 158000, ano: 2025},
-                       {nome: "Prisma", preco: 520000, ano: 2022}]
-            }
-        }
-}
+    constructor(
+        @InjectModel(carModel)
+        private readonly modelCar: typeof carModel
+    ) {}
 
+    async createModel (modelCar: CreateModelDto) {
+        const createdModel = await this.modelCar.create(modelCar)
+
+        return createdModel
+    }
+
+    async findAll() {
+        return await this.modelCar.findAll()
+    }
+
+    async updateModel(id: string, name: UpdateModelDto) {
+        if (name.model_name) {
+            await this.validateNameModel(name.model_name)
+        }
+
+        const updateModelCar = await this.modelCar.update(
+            { ...name },
+            { where: { model_id: id }, returning: true},
+        );
+
+        return updateModelCar[1][0]
+    }
+
+    async validateNameModel(name: string) {
+        const nameModelAlreadyExists = await this.modelCar.findOne({
+            where: { model_name: name},
+        });
+
+        if (nameModelAlreadyExists) {
+            throw new HttpException("Esse modelo já existe!!", HttpStatus.BAD_REQUEST)
+        }
+    }
+}

@@ -1,20 +1,58 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { User } from './user.entity';
+import { CreateUserDto } from './create_user.dto';
+import { InjectModel } from '@nestjs/sequelize';
+import { UpdateUserDto } from './update_user.dto';
 
 @Injectable()
 export class UserService {
-    create (user: object) {
-        return {
-            message: 'Usuario criado com sucesso',
-            data: user,
-        };
+    constructor(
+        @InjectModel(User)
+        private readonly userModel: typeof User
+    ) { }
+
+    async create(user: CreateUserDto) {
+        await this.validateEmail(user.email)
+
+        const userAlreadyExists = await this.userModel.findOne({
+            where: { username: user.username },
+        })
+
+        if (userAlreadyExists) {
+            throw new HttpException("Esse usuario já existe!!", HttpStatus.BAD_REQUEST)
+        }
+
+
+        const createdUser = await this.userModel.create(user)
+
+        return createdUser
+
     }
-    getInfo () {
-        return {
-            message: 'Nome do usuario',
-            data: {
-                "nome": "Edson"
-                  }
+
+    async findAll() {
+        return await this.userModel.findAll()
+    }
+
+    async update(id: string, user: UpdateUserDto) {
+        if (user.email) {
+            await this.validateEmail(user.email)
+        }
+
+        const updateUser = await this.userModel.update(
+            { ...user },
+            { where: { user_id: id }, returning: true },
+        );
+
+        return updateUser[1][0]
+    }
+
+    async validateEmail(email: string) {
+        const emailAlreadyExists = await this.userModel.findOne({
+            where: { email: email },
+        });
+
+        if (emailAlreadyExists) {
+            throw new HttpException("Esse email já existe!!", HttpStatus.BAD_REQUEST)
         }
     }
 }
- 

@@ -1,20 +1,30 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
 import { CarModelService } from './car-model.service';
+import { CreateModelDto } from './create_model.dto';
+import { UpdateModelDto } from './update_model.dto';
 
 @Controller('carModel')
 export class CarModelController {
-      constructor(private readonly carModelService: CarModelService) {}
+    constructor(private readonly carModelService: CarModelService) {}
     
-        @Post()
-            create(
-                @Body() 
-                    model: object
+    @Post()
+        async createModel(
+            @Body()
+                modelCar: CreateModelDto
         ) {
-            return this.carModelService.create(model)
+            return await this.carModelService.createModel(modelCar)
         }
-    
-        @Get()
-           getCar() {
-            return this.carModelService.getCar()
-           }
+
+    @Get()
+        async findAll() {
+            return await this.carModelService.findAll()
+        }
+
+    @Patch(':id')
+    async updateModel(
+        @Param('id') id: string,
+        @Body() name: UpdateModelDto
+    ) {
+        return await this.carModelService.updateModel(id, name)
+    }
 }
