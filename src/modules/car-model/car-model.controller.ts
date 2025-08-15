@@ -1,8 +1,10 @@
-import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post, UseGuards } from '@nestjs/common';
 import { CarModelService } from './car-model.service';
-import { CreateModelDto } from './create_model.dto';
-import { UpdateModelDto } from './update_model.dto';
+import { CreateModelDto } from './dtos/create_model.dto';
+import { UpdateModelDto } from './dtos/update_model.dto';
+import { AuthGuard } from '../auth/auth.guard';
 
+@UseGuards(AuthGuard)
 @Controller('carModel')
 export class CarModelController {
     constructor(private readonly carModelService: CarModelService) {}

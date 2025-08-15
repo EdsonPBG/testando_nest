@@ -1,8 +1,10 @@
-import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post, UseGuards } from '@nestjs/common';
 import { CarBrandService } from './car-brand.service';
-import { CreateBrandDto } from './create_brand.dto';
-import { UpdateBrandDto } from './update_brand.dto';
+import { CreateBrandDto } from './dtos/create_brand.dto';
+import { UpdateBrandDto } from './dtos/update_brand.dto';
+import { AuthGuard } from '../auth/auth.guard';
 
+@UseGuards(AuthGuard)
 @Controller('carBrand')
 export class CarBrandController {
     constructor(private readonly carBrandService: CarBrandService) { }

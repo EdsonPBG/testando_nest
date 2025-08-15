@@ -1,8 +1,8 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Veicules } from './veicules.entity';
-import { CreateVeiculeDto } from './create_veicule.dto';
-import { UpdateVeiculeDto } from './update_veicule.dto';
+import { CreateVeiculeDto } from './dtos/create_veicule.dto';
+import { UpdateVeiculeDto } from './dtos/update_veicule.dto';
 
 @Injectable()
 export class VeiculeService {

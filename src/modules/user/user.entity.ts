@@ -1,5 +1,5 @@
 import { Column, DataType, Default, Model, PrimaryKey, Table } from "sequelize-typescript";
-import { CreateUserDto } from "./create_user.dto";
+import { CreateUserDto } from "./dtos/create_user.dto";
 
 @Table({
     tableName: 'user',

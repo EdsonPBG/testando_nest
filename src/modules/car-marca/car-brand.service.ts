@@ -1,8 +1,8 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { CarBrand } from './brand.entity';
-import { CreateBrandDto } from './create_brand.dto';
-import { UpdateBrandDto } from './update_brand.dto';
+import { CreateBrandDto } from './dtos/create_brand.dto';
+import { UpdateBrandDto } from './dtos/update_brand.dto';
 
 
 @Injectable()

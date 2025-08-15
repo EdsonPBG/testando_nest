@@ -1,32 +1,35 @@
 import { BadRequestException, HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { User } from './user.entity';
-import { CreateUserDto } from './create_user.dto';
 import { InjectModel } from '@nestjs/sequelize';
-import { UpdateUserDto } from './update_user.dto';
+import { UpdateUserDto } from './dtos/update_user.dto';
+import { CreateUserDto } from './dtos/create_user.dto';
+import { hashSync as bcryptHashSync } from 'bcrypt';
 
 @Injectable()
 export class UserService {
     constructor(
         @InjectModel(User)
         private readonly userModel: typeof User
-    ) { }
+    ) {}
 
     async create(user: CreateUserDto) {
         await this.validateEmail(user.email)
 
-        const userAlreadyExists = await this.userModel.findOne({
-            where: { username: user.username },
+        const createdUser = await this.userModel.create({
+            ...user, 
+            password: bcryptHashSync(user.password, 10),
+        });
+
+        const userAlreadyExists = await this.userModel.create({
+            ...user,
+            password: bcryptHashSync(user.password, 10),
         })
 
         if (userAlreadyExists) {
             throw new HttpException("Esse usuario já existe!!", HttpStatus.BAD_REQUEST)
         }
 
-
-        const createdUser = await this.userModel.create(user)
-
         return createdUser
-
     }
 
     async findAll() {
@@ -54,5 +57,22 @@ export class UserService {
         if (emailAlreadyExists) {
             throw new HttpException("Esse email já existe!!", HttpStatus.BAD_REQUEST)
         }
+
+        return true
+    }
+
+
+    async findByUsername(username: string) {
+        const user = await this.userModel.findOne({
+            where: { username: username },
+        });
+
+        return user;
     }
 }
+
+
+// function bcryptHashSync(username: string, arg1: number): string {
+//     throw new Error('Function not implemented.');
+// }
+

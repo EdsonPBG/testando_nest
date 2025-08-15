@@ -1,6 +1,6 @@
 import { PrimaryKey, Default, DataType, Column, Model, Table, ForeignKey, BelongsTo } from "sequelize-typescript";
 import { CarBrand } from "../car-marca/brand.entity";
-import { CreateModelDto } from "./create_model.dto";
+import { CreateModelDto } from "./dtos/create_model.dto";
 
 @Table({
     tableName: 'carModel',

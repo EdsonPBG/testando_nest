@@ -1,8 +1,9 @@
-import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
-import { info } from 'console';
-import { CreateUserDto } from './create_user.dto';
-import { UpdateUserDto } from './update_user.dto';
+import { UpdateUserDto } from './dtos/update_user.dto';
+import { AuthGuard } from '../auth/auth.guard';
+import { CreateUserDto } from './dtos/create_user.dto';
+
 
 @Controller('user')
 export class UserController {
@@ -15,12 +16,14 @@ export class UserController {
     ) {
         return await this.userService.create(user)
     }
-            
+
+    @UseGuards(AuthGuard)  
     @Get()
     async findAll() {
         return await this.userService.findAll()
     }
-
+    
+    @UseGuards(AuthGuard)
     @Patch(':id')
     async update(
         @Param('id') id: string,

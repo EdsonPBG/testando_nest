@@ -1,7 +1,7 @@
 import { PrimaryKey, Default, DataType, Column, Model, Table, ForeignKey, BelongsTo } from "sequelize-typescript";
 import { User } from "../user/user.entity";
 import { carModel } from "../car-model/carModel.entity";
-import { CreateVeiculeDto } from "./create_veicule.dto";
+import { CreateVeiculeDto } from "./dtos/create_veicule.dto";
 
 @Table({
     tableName: 'Veicules',

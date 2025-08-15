@@ -1,5 +1,5 @@
 import { Table, Model, Column, DataType, Default, PrimaryKey } from "sequelize-typescript";
-import { CreateBrandDto } from "./create_brand.dto";
+import { CreateBrandDto } from "./dtos/create_brand.dto";
 
 @Table({
     tableName: 'CarBrand',
