@@ -7,6 +7,7 @@ import { hashSync as bcryptHashSync } from 'bcrypt';
 
 @Injectable()
 export class UserService {
+    [x: string]: any;
     constructor(
         @InjectModel(User)
         private readonly userModel: typeof User
@@ -21,14 +22,14 @@ export class UserService {
         });
 
         const userAlreadyExists = await this.userModel.create({
-            ...user,
+            ...user, 
             password: bcryptHashSync(user.password, 10),
-        })
+        });
 
         if (userAlreadyExists) {
             throw new HttpException("Esse usuario já existe!!", HttpStatus.BAD_REQUEST)
         }
-
+        
         return createdUser
     }
 

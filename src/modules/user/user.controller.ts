@@ -17,13 +17,14 @@ export class UserController {
         return await this.userService.create(user)
     }
 
-    @UseGuards(AuthGuard)  
+    // @UseGuards(AuthGuard)  
     @Get()
     async findAll() {
         return await this.userService.findAll()
     }
+
     
-    @UseGuards(AuthGuard)
+    // @UseGuards(AuthGuard)
     @Patch(':id')
     async update(
         @Param('id') id: string,

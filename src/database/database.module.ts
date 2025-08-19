@@ -24,7 +24,7 @@ dotenv.config();
             ],
             // synchronize: true,
             // sync: {alter: true},
-            logging: true,
+            logging: false,
             autoLoadModels: true
         }),
     ],

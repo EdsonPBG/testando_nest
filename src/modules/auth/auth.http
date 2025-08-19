@@ -1,0 +1,11 @@
+## login
+POST http://localhost:3000/user
+Content-Type: application/json
+
+{
+    "username": "edsonTeste2",
+    "password": "Teste02@",
+    "email": "edsonTeste5@gmail.com"
+}
+
+## GET
