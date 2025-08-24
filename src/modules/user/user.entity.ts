@@ -5,7 +5,7 @@ import { CreateUserDto } from "./dtos/create_user.dto";
     tableName: 'user',
     timestamps: true
 })
-export class User extends Model<User, CreateUserDto> {
+export class User extends Model< User,CreateUserDto> {
            @PrimaryKey
            @Default(DataType.UUIDV4)
            @Column(DataType.UUID)

@@ -18,6 +18,7 @@ import { BodyFormMiddleware } from './shared/middlewares/bodyform.middleware';
 export class AppModule implements NestModule 
   {
     configure(consumer: MiddlewareConsumer) {
-      consumer.apply(LoggerMiddleware, BodyFormMiddleware).forRoutes("*")
+      consumer.apply(//LoggerMiddleware, 
+      BodyFormMiddleware).forRoutes("*")
     }
   }

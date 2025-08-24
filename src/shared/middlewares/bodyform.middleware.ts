@@ -1,5 +1,6 @@
 import { NestMiddleware } from "@nestjs/common";
 import { NextFunction, Request, Response } from "express";
+import { empty } from "rxjs";
 
 export class BodyFormMiddleware implements NestMiddleware {
 
@@ -13,12 +14,10 @@ export class BodyFormMiddleware implements NestMiddleware {
                     body[value] = body[value].trim();
                 }
 
-                if (body[value] === "string") {
+                if (body[value] === "string")
                     body[value] = null;
-                    
-                }
 
-                if (body[value] === "") {
+                if (body[value] === " ") {
                     body[value] = null;
                 }
 
